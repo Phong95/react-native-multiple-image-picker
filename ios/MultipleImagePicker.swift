@@ -10,7 +10,7 @@ class MultipleImagePicker: NSObject, TLPhotosPickerViewControllerDelegate,UINavi
     @objc static func requiresMainQueueSetup() -> Bool {
         return false
     }
-    
+    var isUserCancelImagePicker = false
     var window: UIWindow?
     var bridge: RCTBridge!
     var selectedAssets = [TLPHAsset]()
@@ -214,7 +214,8 @@ class MultipleImagePicker: NSObject, TLPhotosPickerViewControllerDelegate,UINavi
     }
     
     func photoPickerDidCancel() {
-        self.reject("PICKER_CANCELLED", "User has canceled", nil)
+        isUserCancelImagePicker = true
+        // self.reject("PICKER_CANCELLED", "User has canceled", nil)
     }
     
     internal func dismissLoading() {
@@ -224,9 +225,12 @@ class MultipleImagePicker: NSObject, TLPhotosPickerViewControllerDelegate,UINavi
     }
     
     func dismissComplete(){
-        DispatchQueue.main.async {
-            self.getTopMostViewController()?.dismiss(animated: true, completion: nil)
-        }
+      if !self.isUserCancelImagePickercel {
+         DispatchQueue.main.async {
+             self.getTopMostViewController()?.dismiss(animated: true, completion: nil)
+         }
+      }
+      self.isUserCancelImagePicker = false
     }
     
     func dismissPhotoPicker(withTLPHAssets: [TLPHAsset]) {
