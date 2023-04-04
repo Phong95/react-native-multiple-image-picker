@@ -225,7 +225,7 @@ class MultipleImagePicker: NSObject, TLPhotosPickerViewControllerDelegate,UINavi
     }
     
     func dismissComplete(){
-      if !self.isUserCancelImagePickercel {
+      if !self.isUserCancelImagePicker {
          DispatchQueue.main.async {
              self.getTopMostViewController()?.dismiss(animated: true, completion: nil)
          }
